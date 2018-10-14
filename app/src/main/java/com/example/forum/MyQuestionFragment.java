@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -70,9 +68,10 @@ public class MyQuestionFragment extends android.support.v4.app.Fragment {
                     List<Question> list = new ArrayList<>();
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
                         Question question = snap.getValue(Question.class);
-                        if (question.getUserId().contentEquals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        question.setQuestionId(snap.getKey());
-                        list.add(question);
+                        if (question.getUserId().contentEquals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            question.setQuestionId(snap.getKey());
+                            list.add(question);
+                        }
                     }
                     if (list.size()>0){
                         recyclerView.setAdapter(new QuestionRecycler(getActivity(), list, mOnClickListener));

@@ -1,8 +1,8 @@
 package com.example.forum;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +30,8 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
         TextView name = view.findViewById(R.id.profile_name);
         TextView email = view.findViewById(R.id.profile_email);
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        name.setText(mUser.getDisplayName());
-        email.setText(mUser.getEmail());
+        name.append(mUser.getDisplayName());
+        email.append(mUser.getEmail());
         return view;
     }
 

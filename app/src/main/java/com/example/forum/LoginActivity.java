@@ -1,9 +1,9 @@
 package com.example.forum;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -85,8 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            User user1 = new User(user.getUid(),user.getDisplayName());
-                            FirebaseDatabase.getInstance().getReference("Users").push().setValue(user1);
+                            FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).setValue(user.getDisplayName());
                             launchMainActivity();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

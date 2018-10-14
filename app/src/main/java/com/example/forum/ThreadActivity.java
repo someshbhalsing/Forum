@@ -1,11 +1,10 @@
 package com.example.forum;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,14 +42,14 @@ public class ThreadActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Question question1 = dataSnapshot.getValue(Question.class);
+                final Question question1 = dataSnapshot.getValue(Question.class);
                 question.setText(question1.getmQuestion());
                 db.getReference("Users").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            User mUser = snapshot.getValue(User.class);
-                            name.append(mUser.name);
+                            if (snapshot.getKey().equals(question1.getUserId()))
+                                name.append((CharSequence) snapshot.getValue());
                         }
                     }
 

@@ -36,14 +36,14 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ThreadHold
 
     @Override
     public void onBindViewHolder(@NonNull final ThreadHolder threadHolder, int i) {
-        Answer answer = list.get(i);
+        final Answer answer = list.get(i);
         threadHolder.answer.setText(answer.getmAnswer());
         db.getReference("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User mUser = snapshot.getValue(User.class);
-                    threadHolder.name.append(mUser.name);
+                    if (snapshot.getKey().equals(answer.getUserId()))
+                        threadHolder.name.append((CharSequence) snapshot.getValue());
                 }
             }
 

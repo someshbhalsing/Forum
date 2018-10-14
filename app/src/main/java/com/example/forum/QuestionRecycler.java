@@ -3,15 +3,12 @@ package com.example.forum;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,16 +39,20 @@ public class QuestionRecycler extends RecyclerView.Adapter<QuestionRecycler.Ques
 
     @Override
     public void onBindViewHolder(@NonNull final QuestionHolder questionHolder, int i) {
-        Question question = list.get(i);
+        final Question question = list.get(i);
         questionHolder.questionId = question.getQuestionId();
         questionHolder.Quesion.setText(question.getmQuestion());
         db.getReference("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User mUser = snapshot.getValue(User.class);
-                    questionHolder.mUserName = mUser.name;
-                    questionHolder.askedBy.append(mUser.name);
+                    if (snapshot.getKey().equals(question.getUserId())) {
+                        User mUser = new User();
+                        mUser.setName((String) snapshot.getValue());
+                        mUser.setUid(snapshot.getKey());
+                        questionHolder.mUserName = mUser.name;
+                        questionHolder.askedBy.append(mUser.name);
+                    }
                 }
             }
 
